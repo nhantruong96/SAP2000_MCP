@@ -43,6 +43,7 @@ mcp = FastMCP(
 def connect_sap2000(
     program_path: str | None = None,
     attach_to_existing: bool = True,
+    visible: bool = True,
 ) -> dict:
     """Connect to a local SAP2000 instance.
 
@@ -51,21 +52,40 @@ def connect_sap2000(
     When program_path is provided, SAP2000 is launched from that path.
     When attach_to_existing=False and program_path is None, the latest installed version is launched.
 
-    Returns connection status, SAP2000 version, and active model info.
+    visible=False starts the new instance with its window hidden. When attaching
+    instead of launching, visible=False hides the running instance — including
+    any model the user has open on screen; attaching never unhides.
+    Hiding does not make SAP2000 headless: the process still runs, still holds a
+    license seat, still needs a logged-in desktop session, and a dialog raised
+    while hidden cannot be dismissed and will block the script.
+
+    Returns connection status, SAP2000 version, window visibility, and active model info.
     """
     return bridge.connect(
         program_path=program_path,
         attach_to_existing=attach_to_existing,
+        visible=visible,
     )
 
 
 @mcp.tool()
-def disconnect_sap2000(save_model: bool = False) -> dict:
-    """Disconnect from SAP2000 and optionally save the current model.
+def disconnect_sap2000(
+    save_model: bool = False,
+    exit_application: bool | None = None,
+) -> dict:
+    """Release the COM connection to SAP2000.
 
     Always call this when done to release COM resources.
+
+    exit_application defaults to closing SAP2000 only when this server launched
+    it. An instance that was already running when we attached is left open with
+    its model untouched. Pass exit_application=True to close it regardless —
+    unsaved work in that instance is lost unless save_model is True.
     """
-    return bridge.disconnect(save_model=save_model)
+    return bridge.disconnect(
+        save_model=save_model,
+        exit_application=exit_application,
+    )
 
 
 @mcp.tool()

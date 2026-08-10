@@ -28,3 +28,10 @@ Thumbs.db
 
 plans/
 .github/prompts/
+
+# Ad-hoc scripts saved by run_sap_script(save_as=...) land directly in scripts/.
+# Their auto-generated "# Result:" header embeds real model output (reactions,
+# displacements, utilizations) and often absolute paths to client projects, so
+# they are kept local. Reusable scripts belong in a scripts/<topic>/ subfolder,
+# which this rule does not match. To commit one deliberately: git add -f <path>
+scripts/*.py
