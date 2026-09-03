@@ -145,6 +145,10 @@ def run_sap_script(
              for future reuse via list_scripts / load_script.
 
     Returns: {success, stdout, stderr, result, execution_time_s, saved_path, error}
+             plus registered_functions (API paths that resolved on the live COM
+             object and were marked verified) and unresolved_functions (paths
+             the script text mentions that do not exist on this SAP2000 build,
+             so they were skipped — usually a typo or a wrong dot-path)
 
     Workflow:
       1. Agent generates script based on API docs

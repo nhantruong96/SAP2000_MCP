@@ -235,6 +235,47 @@ def _extract_api_functions(script: str) -> list[str]:
     return unique
 
 
+def _com_path_exists(function_path: str) -> bool:
+    """
+    Check that *function_path* names a real member of the live COM object.
+
+    _extract_api_functions works on source text, so it also matches calls
+    that never executed — anything inside a try/except, a branch that was
+    not taken, or a commented-out line that still parses. Registering those
+    marks non-existent API paths as verified and misleads later callers.
+    Resolving the path against the connected SAP2000 instance rules them out.
+
+    Returns False when the path cannot be resolved, and also when it cannot
+    be checked at all (no connection, unexpected COM error). Callers must
+    treat False as "do not register" rather than as "does not exist".
+    """
+    if not bridge.is_connected:
+        return False
+
+    if function_path.startswith("SapObject."):
+        root = bridge.sap_object
+        relative_path = function_path[len("SapObject."):]
+    elif function_path.startswith("SapModel."):
+        root = bridge.sap_model
+        relative_path = function_path[len("SapModel."):]
+    else:
+        root = bridge.sap_model
+        relative_path = function_path
+
+    if root is None:
+        return False
+
+    try:
+        parent, method_name = _resolve_com_path(root, relative_path)
+        getattr(parent, method_name)
+        return True
+    except AttributeError:
+        return False
+    except Exception as exc:  # COM error while walking the hierarchy
+        logger.warning("Could not verify COM path '%s': %s", function_path, exc)
+        return False
+
+
 def run_script(script: str, description: str = "", save_as: str | None = None) -> dict:
     """
     Execute a Python script string in the SAP2000 sandbox.
@@ -352,18 +393,33 @@ def run_script(script: str, description: str = "", save_as: str | None = None) -
         )
         response["saved_path"] = save_result.get("path")
 
-    # Auto-register API functions used in this successful script
+    # Auto-register API functions used in this successful script.
+    # Only paths that resolve on the live COM object are registered — see
+    # _com_path_exists for why the text match alone is not enough.
     try:
-        api_functions = _extract_api_functions(script)
+        candidates = _extract_api_functions(script)
         script_label = save_as or ""
-        for func_path in api_functions:
-            function_registry.mark_verified(func_path, script_label)
-        if api_functions:
-            response["registered_functions"] = api_functions
+        registered = []
+        unresolved = []
+        for func_path in candidates:
+            if _com_path_exists(func_path):
+                function_registry.mark_verified(func_path, script_label)
+                registered.append(func_path)
+            else:
+                unresolved.append(func_path)
+        if registered:
+            response["registered_functions"] = registered
             logger.info(
                 "Auto-registered %d API functions from script: %s",
-                len(api_functions),
-                api_functions,
+                len(registered),
+                registered,
+            )
+        if unresolved:
+            response["unresolved_functions"] = unresolved
+            logger.warning(
+                "Skipped %d unresolved API path(s), not registered: %s",
+                len(unresolved),
+                unresolved,
             )
     except Exception as exc:
         logger.warning("Auto-registration failed (non-fatal): %s", exc)
