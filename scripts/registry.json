@@ -3399,36 +3399,6 @@
       "known_errors": [],
       "notes": "ByRef output: NumberItems then 5 parallel arrays then ret_code."
     },
-    "SapModel.LoadPatterns.AutoSeismic.GetAutoCode": {
-      "category": "",
-      "description": "",
-      "signature": "",
-      "verified": true,
-      "first_verified": "2026-08-09T16:21:23.578986+00:00",
-      "last_verified": "2026-08-09T16:21:23.578986+00:00",
-      "verification_count": 1,
-      "verification_type": "auto",
-      "wrapper_script": "",
-      "used_in_scripts": [],
-      "parameter_notes": "",
-      "known_errors": [],
-      "notes": ""
-    },
-    "SapModel.LoadPatterns.AutoWind.GetAutoCode": {
-      "category": "",
-      "description": "",
-      "signature": "",
-      "verified": true,
-      "first_verified": "2026-08-09T16:21:23.581991+00:00",
-      "last_verified": "2026-08-09T16:21:23.581991+00:00",
-      "verification_count": 1,
-      "verification_type": "auto",
-      "wrapper_script": "",
-      "used_in_scripts": [],
-      "parameter_notes": "",
-      "known_errors": [],
-      "notes": ""
-    },
     "SapModel.LoadPatterns.AutoSeismic.GetUserCoefficient": {
       "category": "Load_Patterns",
       "description": "Retrieve the user coefficient auto seismic load parameters of a load pattern",
@@ -3458,21 +3428,6 @@
       "parameter_notes": "MyOption: 1 mass from element self mass and additional masses, 2 mass from specified load patterns, 3 mass from both. LoadPat = the load patterns converted to mass. SF = multiplier applied to each of those patterns. LoadPat and SF come back empty when MyOption is 1.",
       "known_errors": [],
       "notes": "ByRef output: MyOption, NumberLoads, 2 parallel arrays, then ret_code. It takes no name argument because it reads the single model-wide setting, despite living under PropMaterial. SapModel.SourceMass is the newer named mass source API and is what current models use."
-    },
-    "SapModel.LoadCases.GetType": {
-      "category": "",
-      "description": "",
-      "signature": "",
-      "verified": true,
-      "first_verified": "2026-08-09T16:22:10.839758+00:00",
-      "last_verified": "2026-08-09T17:09:22.411397+00:00",
-      "verification_count": 2,
-      "verification_type": "auto",
-      "wrapper_script": "",
-      "used_in_scripts": [],
-      "parameter_notes": "",
-      "known_errors": [],
-      "notes": ""
     },
     "SapModel.LoadCases.StaticLinear.GetLoads": {
       "category": "Load_Cases",
@@ -3524,21 +3479,6 @@
       "parameter_notes": "Ratio = controlling demand over capacity ratio. RatioType: 1 PMM, 2 major shear, 3 minor shear, 4 major beam-column capacity, 5 minor beam-column capacity. Location = distance from the I-end where the controlling ratio occurs. ComboName = governing design combination. ErrorSummary and WarningSummary are blank when the member designed cleanly. ItemType: 0 object, 1 group, 2 selected objects.",
       "known_errors": [],
       "notes": "ByRef output: NumberItems then 7 parallel arrays then ret_code. Requires DesignSteel.StartDesign to have completed, otherwise it returns a nonzero code. Check ErrorSummary before trusting a Ratio, since a failed member can still report a number."
-    },
-    "SapModel.DesignSteel.Eurocode3_2005.GetPreference": {
-      "category": "",
-      "description": "",
-      "signature": "",
-      "verified": true,
-      "first_verified": "2026-08-09T16:25:23.512602+00:00",
-      "last_verified": "2026-08-09T16:25:23.512602+00:00",
-      "verification_count": 1,
-      "verification_type": "auto",
-      "wrapper_script": "",
-      "used_in_scripts": [],
-      "parameter_notes": "",
-      "known_errors": [],
-      "notes": ""
     },
     "SapModel.DesignSteel.StartDesign": {
       "category": "Design",
@@ -3625,21 +3565,6 @@
       "parameter_notes": "MyType: 1 simple spring, 2 link property. S = spring stiffness per unit length, used only when MyType is 1. SimpleSpringType: 1 resists tension and compression, 2 compression only, 3 tension only. LinkProp = link property name, used only when MyType is 2. SpringLocalOneType: 1 parallel to a local axis, 2 in the 2-3 plane at Plane23Angle, 3 user-specified direction vector given by VecX, VecY and VecZ in coordinate system CSys.",
       "known_errors": [],
       "notes": "ByRef output: NumberSprings then 12 parallel arrays then ret_code. Line springs along a pile shaft are how lateral soil resistance is modelled."
-    },
-    "SapModel.BridgeObj.GetNameList": {
-      "category": "",
-      "description": "",
-      "signature": "",
-      "verified": true,
-      "first_verified": "2026-08-09T17:09:22.401036+00:00",
-      "last_verified": "2026-08-09T17:09:22.401036+00:00",
-      "verification_count": 1,
-      "verification_type": "auto",
-      "wrapper_script": "",
-      "used_in_scripts": [],
-      "parameter_notes": "",
-      "known_errors": [],
-      "notes": ""
     },
     "SapModel.Func.GetNameList": {
       "category": "Functions",
@@ -3750,21 +3675,6 @@
       "known_errors": [],
       "notes": "ByRef output: [NumberNames, MyName[], ret_code]. Joint patterns hold a scalar value at each joint and are what surface pressure and temperature loads reference through their PatternName argument, for example to vary hydrostatic pressure with depth."
     },
-    "SapModel.FrameElm.Count": {
-      "category": "",
-      "description": "",
-      "signature": "",
-      "verified": true,
-      "first_verified": "2026-08-09T17:19:16.342330+00:00",
-      "last_verified": "2026-08-09T17:19:16.342330+00:00",
-      "verification_count": 1,
-      "verification_type": "auto",
-      "wrapper_script": "",
-      "used_in_scripts": [],
-      "parameter_notes": "",
-      "known_errors": [],
-      "notes": ""
-    },
     "SapModel.AreaElm.Count": {
       "category": "Analysis_Model",
       "description": "Count the area elements in the analysis model",
@@ -3809,51 +3719,6 @@
       "parameter_notes": "Both items are ByRef outputs. Call with placeholders, e.g. GetNameList(0, []).",
       "known_errors": [],
       "notes": "ByRef output: [NumberNames, MyName[], ret_code]. A model can hold several named mass sources while only one is the default; read that one with SourceMass.GetDefault and its content with SourceMass.GetMassSource."
-    },
-    "SapModel.LaneObj.GetNameList": {
-      "category": "",
-      "description": "",
-      "signature": "",
-      "verified": true,
-      "first_verified": "2026-08-09T17:23:10.925385+00:00",
-      "last_verified": "2026-08-09T17:23:10.925385+00:00",
-      "verification_count": 1,
-      "verification_type": "auto",
-      "wrapper_script": "",
-      "used_in_scripts": [],
-      "parameter_notes": "",
-      "known_errors": [],
-      "notes": ""
-    },
-    "SapModel.Vehicle.GetNameList": {
-      "category": "",
-      "description": "",
-      "signature": "",
-      "verified": true,
-      "first_verified": "2026-08-09T17:23:10.927385+00:00",
-      "last_verified": "2026-08-09T17:23:10.927385+00:00",
-      "verification_count": 1,
-      "verification_type": "auto",
-      "wrapper_script": "",
-      "used_in_scripts": [],
-      "parameter_notes": "",
-      "known_errors": [],
-      "notes": ""
-    },
-    "SapModel.VehicleClass.GetNameList": {
-      "category": "",
-      "description": "",
-      "signature": "",
-      "verified": true,
-      "first_verified": "2026-08-09T17:23:10.929839+00:00",
-      "last_verified": "2026-08-09T17:23:10.929839+00:00",
-      "verification_count": 1,
-      "verification_type": "auto",
-      "wrapper_script": "",
-      "used_in_scripts": [],
-      "parameter_notes": "",
-      "known_errors": [],
-      "notes": ""
     },
     "SapModel.LoadCases.Moving.GetLoads": {
       "category": "Load_Cases",
@@ -4146,8 +4011,8 @@
     }
   },
   "summary": {
-    "total_registered": 265,
-    "total_verified": 265,
-    "last_updated": "2026-09-03T18:07:51.949332+00:00"
+    "total_registered": 256,
+    "total_verified": 256,
+    "last_updated": "2026-09-03T18:24:16.563448+00:00"
   }
 }
