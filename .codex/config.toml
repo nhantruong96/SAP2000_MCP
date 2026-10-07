@@ -1,3 +1,3 @@
 [mcp_servers.sap2000]
-command = 'C:\Tools\SAP2000_MCP\.venv\Scripts\python.exe'
-args = ['C:\Tools\SAP2000_MCP\mcp_server\server.py']
+command = 'C:\mcp\SAP2000_MCP\.venv\Scripts\python.exe'
+args = ['C:\mcp\SAP2000_MCP\mcp_server\server.py']
